@@ -1,9 +1,9 @@
 import calendar
 import itertools
 
-
 MIN_YEAR = 1900
 MAX_YEAR = 2100
+PRINT_DISTANCES = False
 
 
 def get_annotated_years(min_year, max_year):
@@ -22,13 +22,21 @@ def main():
     grouped = itertools.groupby(years, key=get_key)
 
     for key, items in grouped:
+        items = list(items)
         print(
-            "{}, {}: {}".format(
+            "{}, {}:".format(
                 calendar.day_name[key[0]],
                 "leap" if key[1] else "not leap",
-                " ".join(str(x[0]) for x in items),
             )
         )
+        print(
+            "    " + " ".join(str(x[0]) for x in items),
+        )
+
+        if PRINT_DISTANCES:
+            years = [x[0] for x in items]
+            distances = zip(years, years[1:])
+            print(f"      {'   '.join(format(y - x, '2d') for x, y in distances)}")
 
 
 if __name__ == "__main__":
